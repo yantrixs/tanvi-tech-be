@@ -20,8 +20,6 @@ import java.util.Map;
 @Service
 public class JsonWebTokenService implements TokenService {
 
-    private static int tokenExpirationTime = 30;
-
     @Value("security.token.secret.key")
     private String tokenKey;
 
@@ -50,6 +48,7 @@ public class JsonWebTokenService implements TokenService {
             tokenData.put("username", user.getUsername());
             tokenData.put("token_create_date", LocalDateTime.now());
             Calendar calendar = Calendar.getInstance();
+            int tokenExpirationTime = 30;
             calendar.add(Calendar.MINUTE, tokenExpirationTime);
             tokenData.put("token_expiration_date", calendar.getTime());
             JwtBuilder jwtBuilder = Jwts.builder();

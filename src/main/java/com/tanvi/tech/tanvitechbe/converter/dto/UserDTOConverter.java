@@ -5,14 +5,10 @@ import com.tanvi.tech.tanvitechbe.model.Authority;
 import com.tanvi.tech.tanvitechbe.model.User;
 import org.springframework.core.convert.converter.Converter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 

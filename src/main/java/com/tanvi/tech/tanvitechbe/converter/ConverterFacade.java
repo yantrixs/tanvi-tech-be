@@ -10,8 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConverterFacade {
 
-    @Autowired
     private ConverterFactory converterFactory;
+
+    @Autowired
+    public ConverterFacade(final ConverterFactory converterFactory) {
+        this.converterFactory = converterFactory;
+    }
 
     public User convert(final UserDTO dto) {
         return (User) converterFactory.getConverter(dto.getClass()).convert(dto);
