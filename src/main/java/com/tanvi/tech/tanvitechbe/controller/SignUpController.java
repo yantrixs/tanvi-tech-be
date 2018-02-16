@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/signup")
+@RequestMapping("/api/v1/")
 public class SignUpController {
 
     private final UserService service;
@@ -27,7 +27,7 @@ public class SignUpController {
         this.converterFacade = converterFacade;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "auth/signup", method = RequestMethod.POST)
     public ResponseEntity<?> signUp(@RequestBody final UserDTO dto) {
         if (service.findByEmail(dto.getEmail()) == null) {
             return new ResponseEntity<>(service.create(converterFacade.convert(dto)), HttpStatus.OK);

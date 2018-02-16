@@ -29,7 +29,7 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods",
                 "POST, GET, PUT, OPTIONS, DELETE, PATCH");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-auth-token, Content-Type");
+        response.setHeader("Access-Control-Allow-Headers", "x-auth-token, Content-Type, Authorization");
         response.setHeader("Access-Control-Expose-Headers", "x-auth-token, Content-Type");
 
         final HttpServletRequest request = (HttpServletRequest) req;

@@ -15,7 +15,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/v1/")
 public class AuthenticationController {
     private final TokenService tokenService;
     private final UserService userService;
@@ -27,7 +27,7 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "auth", method = RequestMethod.POST)
+    @RequestMapping(value = "auth/login", method = RequestMethod.POST)
     public ResponseEntity<?> authenticate(@RequestBody final LoginDTO dto) {
         final String token = tokenService.getToken(dto.getUsername(), dto.getPassword());
         if (token != null) {
