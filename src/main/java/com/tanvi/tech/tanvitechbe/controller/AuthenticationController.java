@@ -3,9 +3,8 @@ package com.tanvi.tech.tanvitechbe.controller;
 import com.tanvi.tech.tanvitechbe.dto.LoginDTO;
 import com.tanvi.tech.tanvitechbe.dto.TokenDTO;
 import com.tanvi.tech.tanvitechbe.model.User;
-import com.tanvi.tech.tanvitechbe.service.EmailService;
-import com.tanvi.tech.tanvitechbe.service.UserService;
 import com.tanvi.tech.tanvitechbe.security.service.TokenService;
+import com.tanvi.tech.tanvitechbe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/")
 public class AuthenticationController {
     private final TokenService tokenService;
     private final UserService userService;
@@ -28,7 +27,7 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "auth", method = RequestMethod.POST)
     public ResponseEntity<?> authenticate(@RequestBody final LoginDTO dto) {
         final String token = tokenService.getToken(dto.getUsername(), dto.getPassword());
         if (token != null) {
@@ -40,10 +39,11 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "/forgot", method = RequestMethod.POST)
-    public ResponseEntity<?> forgotPassword(@RequestBody final String email,
+    @RequestMapping(value = "forgot", method = RequestMethod.POST)
+    public ResponseEntity<?> forgotPassword(@RequestBody final Map<String, String> email,
                                             HttpServletRequest request) {
-        User userExist = userService.findByEmail(email);
+        String emailAdd = email.get("email");
+        User userExist = userService.findByEmail(emailAdd);
         if (userExist != null) {
             String appUrl = request.getScheme() + "://" + request.getServerName();
             userService.saveResetToken(userExist, appUrl);
@@ -53,13 +53,13 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "/reset", method = RequestMethod.POST)
-    public ResponseEntity<?> resetPassword(@RequestBody String password,
+    @RequestMapping(value = "reset", method = RequestMethod.POST)
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> password,
                                            @RequestParam Map<String, String> requestParams) {
 
         User resetUser = userService.findByResetToken(requestParams.get("token"));
         if(resetUser != null) {
-            resetUser.setPassword(password);
+            resetUser.setPassword(password.get("password"));
             userService.saveResetPassword(resetUser);
             return new ResponseEntity<>("Password changed successfully", HttpStatus.OK);
         } else {

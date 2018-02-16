@@ -66,7 +66,7 @@ public class JsonWebTokenService implements TokenService {
         return passwordEncoder.matches(userPassword, dbPassword);
     }
 
-    public static void setTokenExpirationTime(final int tokenExpirationTime) {
+   /* public static void setTokenExpirationTime(final int tokenExpirationTime) {
         JsonWebTokenService.tokenExpirationTime = tokenExpirationTime;
-    }
+    }*/
 }

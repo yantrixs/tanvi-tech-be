@@ -75,6 +75,7 @@ public class BasicUserService implements UserService {
     public void saveResetPassword(User user) {
         user.setUpdatedAt(String.valueOf(LocalDateTime.now()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setResetToken("");
         repository.save(user);
     }
 

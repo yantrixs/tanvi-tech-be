@@ -2,7 +2,6 @@ package com.tanvi.tech.tanvitechbe.controller;
 
 import com.tanvi.tech.tanvitechbe.converter.ConverterFacade;
 import com.tanvi.tech.tanvitechbe.dto.UserDTO;
-import com.tanvi.tech.tanvitechbe.exception.model.EmailFoundException;
 import com.tanvi.tech.tanvitechbe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,7 @@ public class SignUpController {
         if (service.findByEmail(dto.getEmail()) == null) {
             return new ResponseEntity<>(service.create(converterFacade.convert(dto)), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new EmailFoundException("Email already found"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Email already found", HttpStatus.BAD_REQUEST);
         }
     }
 }
