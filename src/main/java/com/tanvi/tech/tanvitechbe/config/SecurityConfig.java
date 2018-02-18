@@ -26,8 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/api/v1/auth/login").permitAll()
                 .antMatchers("/api/v1/auth/signup").permitAll()
-                .antMatchers("/api/v1/forgot").permitAll()
-                .antMatchers("/api/v1/reset").permitAll()
+                .antMatchers("/api/v1/auth/forgot").permitAll()
+                .antMatchers("/api/v1/auth/reset").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new AuthenticationTokenFilter(tokenAuthenticationService),

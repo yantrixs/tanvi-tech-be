@@ -66,7 +66,7 @@ public class BasicUserService implements UserService {
         passwordResetEmail.setTo(user.getEmail());
         passwordResetEmail.setSubject("Password Reset Request");
         passwordResetEmail.setText("To reset your password, click the link below:\n" + apiUrl
-                + "/reset?token=" + user.getResetToken());
+                + "/auth/reset?token=" + user.getResetToken());
 
         emailService.sendEmail(passwordResetEmail);
     }

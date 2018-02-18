@@ -39,13 +39,13 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "forgot", method = RequestMethod.POST)
+    @RequestMapping(value = "auth/forgot", method = RequestMethod.POST)
     public ResponseEntity<?> forgotPassword(@RequestBody final Map<String, String> email,
                                             HttpServletRequest request) {
         String emailAdd = email.get("email");
         User userExist = userService.findByEmail(emailAdd);
         if (userExist != null) {
-            String appUrl = request.getScheme() + "://" + request.getServerName();
+            String appUrl = request.getScheme() + "://" + request.getServerName() + ":4200";
             userService.saveResetToken(userExist, appUrl);
             return new ResponseEntity<>("Email sent", HttpStatus.OK);
         } else {
@@ -53,11 +53,9 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "reset", method = RequestMethod.POST)
-    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> password,
-                                           @RequestParam Map<String, String> requestParams) {
-
-        User resetUser = userService.findByResetToken(requestParams.get("token"));
+    @RequestMapping(value = "auth/reset", method = RequestMethod.POST)
+    public ResponseEntity<?> resetPassword(@RequestBody final Map<String, String> password ) {
+        User resetUser = userService.findByResetToken(password.get("token"));
         if(resetUser != null) {
             resetUser.setPassword(password.get("password"));
             userService.saveResetPassword(resetUser);

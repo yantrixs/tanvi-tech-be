@@ -46,6 +46,8 @@ public class JsonWebTokenService implements TokenService {
             tokenData.put("clientType", "user");
             tokenData.put("userID", user.getId());
             tokenData.put("username", user.getUsername());
+            tokenData.put("email", user.getEmail());
+            tokenData.put("dob", user.getDob());
             tokenData.put("token_create_date", LocalDateTime.now());
             Calendar calendar = Calendar.getInstance();
             int tokenExpirationTime = 30;
