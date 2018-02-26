@@ -2,9 +2,8 @@ package com.tanvi.tech.tanvitechbe.security.service;
 
 import com.tanvi.tech.tanvitechbe.exception.model.ServiceException;
 import com.tanvi.tech.tanvitechbe.model.User;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +18,7 @@ import java.util.Map;
 
 @Service
 public class JsonWebTokenService implements TokenService {
-
+    private static final Logger logger = Logger.getLogger(JsonWebTokenService.class);
     @Value("security.token.secret.key")
     private String tokenKey;
 
@@ -67,6 +66,20 @@ public class JsonWebTokenService implements TokenService {
         return passwordEncoder.matches(userPassword, dbPassword);
     }
 
+
+    public Jws<Claims> tokenParser(String token) {
+        Jws<Claims> claims = null;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(tokenKey)
+                    .parseClaimsJws(token);
+            logger.debug("debug claims is  " + claims);
+        } catch (MissingClaimException | IncorrectClaimException e) {
+            logger.debug(e.getMessage());
+        }
+
+        return claims;
+    }
    /* public static void setTokenExpirationTime(final int tokenExpirationTime) {
         JsonWebTokenService.tokenExpirationTime = tokenExpirationTime;
     }*/

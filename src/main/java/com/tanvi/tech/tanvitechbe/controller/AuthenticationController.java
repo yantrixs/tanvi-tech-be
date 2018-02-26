@@ -53,6 +53,11 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     *
+     * @param password map[0] -> new password, map[1] -> token, token from email, UUID code
+     * @return if user table token in exits set the new password, return else block
+     */
     @RequestMapping(value = "auth/reset", method = RequestMethod.POST)
     public ResponseEntity<?> resetPassword(@RequestBody final Map<String, String> password ) {
         User resetUser = userService.findByResetToken(password.get("token"));
