@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,7 +47,7 @@ public class StockService implements IStockService {
 
     @Override
     public List<Stock> create(List<Stock> stocks) {
-        for (Stock stock : stocks){
+        for (Stock stock : stocks) {
             stock.setCreatedAt(String.valueOf(LocalDateTime.now()));
         }
         return repository.save(stocks);
@@ -55,5 +56,20 @@ public class StockService implements IStockService {
     @Override
     public Stock find(String id) {
         return repository.findOne(id);
+    }
+
+    @Override
+    public List<Stock> updateStocks(List<Stock> stocks) {
+        List<Stock> updatedStock = new ArrayList<>();
+        for (Stock stock : stocks) {
+            Stock stockInfo = repository.findOne(stock.getId());
+            int updateStockNo = stockInfo.getQuantity() - stock.getQuantity();
+            stock.setQuantity(updateStockNo);
+            stock.setUpdatedAt(String.valueOf(LocalDateTime.now()));
+            updatedStock.add(stock);
+        }
+
+        repository.save(updatedStock);
+        return updatedStock;
     }
 }

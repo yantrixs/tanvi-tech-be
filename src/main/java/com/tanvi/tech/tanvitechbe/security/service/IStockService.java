@@ -15,4 +15,6 @@ public interface IStockService {
     List<Stock> create(List<Stock> stocks);
 
     Stock find(String id);
+
+    List<Stock> updateStocks(List<Stock> stocks);
 }

@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/auth/forgot").permitAll()
                 .antMatchers("/api/v1/auth/reset").permitAll()
                 .antMatchers("/api/v1/stocks/*").permitAll()
+                .antMatchers("/api/v1/sells/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new AuthenticationTokenFilter(tokenAuthenticationService),
