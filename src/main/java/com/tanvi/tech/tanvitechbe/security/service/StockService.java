@@ -1,6 +1,5 @@
 package com.tanvi.tech.tanvitechbe.security.service;
 
-import com.tanvi.tech.tanvitechbe.model.Stock;
 import com.tanvi.tech.tanvitechbe.model.StockIn;
 import com.tanvi.tech.tanvitechbe.model.StockOut;
 import com.tanvi.tech.tanvitechbe.repository.StockRepository;
