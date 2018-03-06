@@ -11,7 +11,7 @@ public interface ISellService {
 
     String delete(String id);
 
-    SellStock create(SellStock sellStock);
+    SellStock create(SellStock stockOut);
 
     SellStock find(String id);
 }

@@ -12,8 +12,6 @@ public class Stock extends BaseEntity implements Serializable {
     private String date;
     private String model;
     private String product;
-    private int quantity;
-    private Number unitRate;
 
     public String getUserId() {
         return userId;
@@ -61,21 +59,5 @@ public class Stock extends BaseEntity implements Serializable {
 
     public void setProduct(String product) {
         this.product = product;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Number getUnitRate() {
-        return unitRate;
-    }
-
-    public void setUnitRate(Number unitRate) {
-        this.unitRate = unitRate;
     }
 }

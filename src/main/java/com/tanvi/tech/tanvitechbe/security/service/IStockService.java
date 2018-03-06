@@ -1,20 +1,22 @@
 package com.tanvi.tech.tanvitechbe.security.service;
 
 import com.tanvi.tech.tanvitechbe.model.Stock;
+import com.tanvi.tech.tanvitechbe.model.StockIn;
+import com.tanvi.tech.tanvitechbe.model.StockOut;
 
 import java.util.List;
 
 public interface IStockService {
 
-    List<Stock> findAll();
+    List<StockIn> findAll();
 
-    Stock update(String id, Stock stock);
+    StockIn update(String id, StockIn stock);
 
     String delete(String id);
 
-    List<Stock> create(List<Stock> stocks);
+    List<StockIn> create(List<StockIn> stocks);
 
-    Stock find(String id);
+    StockIn find(String id);
 
-    List<Stock> updateStocks(List<Stock> stocks);
+    List<StockIn> updateStocks(List<StockOut> stocks);
 }

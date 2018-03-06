@@ -1,6 +1,6 @@
 package com.tanvi.tech.tanvitechbe.controller;
 
-import com.tanvi.tech.tanvitechbe.model.Stock;
+import com.tanvi.tech.tanvitechbe.model.StockIn;
 import com.tanvi.tech.tanvitechbe.security.service.JsonWebTokenService;
 import com.tanvi.tech.tanvitechbe.security.service.StockService;
 import io.jsonwebtoken.Claims;
@@ -30,17 +30,17 @@ public class StockController {
     }
 
     @RequestMapping(value = "stocks/add", method = RequestMethod.POST)
-    public ResponseEntity<?> addStock(@RequestBody final List<Stock> stocks,
+    public ResponseEntity<?> addStock(@RequestBody final List<StockIn> stocks,
                                       @RequestHeader final Map<String, String> headers) {
         Jws<Claims> claims = tokenService.tokenParser(headers.get("authorization"));
         if (claims != null) {
             Claims payLoad = claims.getBody();
-            for (Stock stock : stocks) {
+            for (StockIn stock : stocks) {
                 stock.setUserId(String.valueOf(payLoad.get("userID")));
                 stock.setEmail(String.valueOf(payLoad.get("email")));
                 stock.setUsername(String.valueOf(payLoad.get("username")));
             }
-            List<Stock> savedStock = stockService.create(stocks);
+            List<StockIn> savedStock = stockService.create(stocks);
             return new ResponseEntity<>(savedStock, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("something went wrong", HttpStatus.BAD_REQUEST);
@@ -51,7 +51,7 @@ public class StockController {
     public ResponseEntity<?> getStockInfo(@RequestHeader final Map<String, String> headers) {
         Jws<Claims> claims = tokenService.tokenParser(headers.get("authorization"));
         if (claims != null) {
-            List<Stock> savedStocks = stockService.findAll();
+            List<StockIn> savedStocks = stockService.findAll();
             logger.debug("Getting list of stocks "+ savedStocks);
             return new ResponseEntity<>(savedStocks, HttpStatus.OK);
         } else {

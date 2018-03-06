@@ -1,7 +1,10 @@
 package com.tanvi.tech.tanvitechbe.model;
 
-public class Address {
+import java.io.Serializable;
 
+public class Address extends BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = -8712423209882932120L;
     private String name;
     private String address1;
     private String address2;

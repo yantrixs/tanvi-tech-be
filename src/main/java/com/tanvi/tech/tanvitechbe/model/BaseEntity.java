@@ -16,7 +16,6 @@ public class BaseEntity implements Serializable {
     private String createdAt;
     private String updatedAt;
 
-
     public String getId() {
         return id;
     }

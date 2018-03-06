@@ -1,6 +1,7 @@
 package com.tanvi.tech.tanvitechbe.security.service;
 
 import com.tanvi.tech.tanvitechbe.model.SellStock;
+import com.tanvi.tech.tanvitechbe.model.StockOut;
 import com.tanvi.tech.tanvitechbe.model.Stock;
 import com.tanvi.tech.tanvitechbe.repository.SellStockRepository;
 import org.springframework.stereotype.Service;
@@ -49,14 +50,16 @@ public class SellService implements ISellService{
     }
 
     @Override
-    public SellStock create(SellStock sellStocks) {
-        List<Stock> stocks = new ArrayList<Stock>();
-        for (Stock stock : sellStocks.getStocks()){
-            stocks.add(stock);
+    public SellStock create(SellStock stocksOut) {
+        List<StockOut> stocks = new ArrayList<StockOut>();
+        for (StockOut stock : stocksOut.getStockOuts()){
             stock.setCreatedAt(String.valueOf(LocalDateTime.now()));
+            stocks.add(stock);
         }
+        stocksOut.setStockOuts(stocks);
+        SellStock stockOut = repository.save(stocksOut);
         stockService.updateStocks(stocks);
-        return repository.save(sellStocks);
+        return repository.save(stocksOut);
     }
 
     @Override

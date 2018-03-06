@@ -1,6 +1,8 @@
 package com.tanvi.tech.tanvitechbe.security.service;
 
 import com.tanvi.tech.tanvitechbe.model.Stock;
+import com.tanvi.tech.tanvitechbe.model.StockIn;
+import com.tanvi.tech.tanvitechbe.model.StockOut;
 import com.tanvi.tech.tanvitechbe.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,15 +22,15 @@ public class StockService implements IStockService {
     }
 
     @Override
-    public List<Stock> findAll() {
+    public List<StockIn> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Stock update(String id, Stock stock) {
+    public StockIn update(String id, StockIn stock) {
         stock.setId(id);
 
-        final Stock saved = repository.findOne(id);
+        final StockIn saved = repository.findOne(id);
 
         if (saved != null) {
             stock.setCreatedAt(saved.getCreatedAt());
@@ -46,27 +48,29 @@ public class StockService implements IStockService {
     }
 
     @Override
-    public List<Stock> create(List<Stock> stocks) {
-        for (Stock stock : stocks) {
+    public List<StockIn> create(List<StockIn> stocks) {
+        for (StockIn stock : stocks) {
+            stock.setStockLeft(stock.getQuantity());
             stock.setCreatedAt(String.valueOf(LocalDateTime.now()));
         }
         return repository.save(stocks);
     }
 
     @Override
-    public Stock find(String id) {
+    public StockIn find(String id) {
         return repository.findOne(id);
     }
 
     @Override
-    public List<Stock> updateStocks(List<Stock> stocks) {
-        List<Stock> updatedStock = new ArrayList<>();
-        for (Stock stock : stocks) {
-            Stock stockInfo = repository.findOne(stock.getId());
-            int updateStockNo = stockInfo.getQuantity() - stock.getQuantity();
-            stock.setQuantity(updateStockNo);
-            stock.setUpdatedAt(String.valueOf(LocalDateTime.now()));
-            updatedStock.add(stock);
+    public List<StockIn> updateStocks(List<StockOut> stocks) {
+        List<StockIn> updatedStock = new ArrayList<>();
+        for (StockOut stock : stocks) {
+            StockIn stockInfo = repository.findOne(stock.getId());
+            int updateStockNo = stockInfo.getStockLeft() - stock.getSellQuantity();
+            stockInfo.setStockLeft(updateStockNo);
+            stockInfo.setUpdatedAt(String.valueOf(LocalDateTime.now()));
+            // stock.setUnitRate(stockInfo.getUnitRate());
+            updatedStock.add(stockInfo);
         }
 
         repository.save(updatedStock);

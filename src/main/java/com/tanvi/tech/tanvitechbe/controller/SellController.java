@@ -1,6 +1,7 @@
 package com.tanvi.tech.tanvitechbe.controller;
 
 import com.tanvi.tech.tanvitechbe.model.SellStock;
+import com.tanvi.tech.tanvitechbe.model.StockOut;
 import com.tanvi.tech.tanvitechbe.security.service.JsonWebTokenService;
 import com.tanvi.tech.tanvitechbe.security.service.SellService;
 import io.jsonwebtoken.Claims;
@@ -30,16 +31,21 @@ public class SellController {
     public ResponseEntity<?> addSell(@RequestBody final SellStock sellStock,
                                      @RequestHeader final Map<String, String> headers) {
         Jws<Claims> claims = tokenService.tokenParser(headers.get("authorization"));
-        if(claims != null) {
+        if (claims != null) {
             Claims payLoad = claims.getBody();
+            for (StockOut stock : sellStock.getStockOuts()) {
+                stock.setUserId(String.valueOf(payLoad.get("userID")));
+                stock.setEmail(String.valueOf(payLoad.get("email")));
+                stock.setUsername(String.valueOf(payLoad.get("username")));
+            }
             sellStock.setUserId(String.valueOf(payLoad.get("userID")));
             sellStock.setEmail(String.valueOf(payLoad.get("email")));
             sellStock.setUsername(String.valueOf(payLoad.get("username")));
-            SellStock savedSellStocks = sellService.create(sellStock);
-            logger.debug("Saved Stocks are ::: "+savedSellStocks);
-            return new ResponseEntity<>(savedSellStocks, HttpStatus.OK);
-        }
-        else {
+
+            SellStock savedStocksOut = sellService.create(sellStock);
+            logger.debug("Saved Stocks are ::: " + savedStocksOut);
+            return new ResponseEntity<>(savedStocksOut, HttpStatus.OK);
+        } else {
             // logger.debug(claims);
             return new ResponseEntity<>("something went wrong", HttpStatus.BAD_REQUEST);
         }
@@ -49,9 +55,9 @@ public class SellController {
     public ResponseEntity<?> getSellStockInfo(@RequestHeader final Map<String, String> headers) {
         Jws<Claims> claims = tokenService.tokenParser(headers.get("authorization"));
         if (claims != null) {
-            List<SellStock> savedSellStocks = sellService.findAll();
-            logger.debug("Getting list of stocks "+ savedSellStocks);
-            return new ResponseEntity<>(savedSellStocks, HttpStatus.OK);
+            List<SellStock> savedStockOuts = sellService.findAll();
+            logger.debug("Getting list of stocks " + savedStockOuts);
+            return new ResponseEntity<>(savedStockOuts, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("something went wrong", HttpStatus.BAD_REQUEST);
         }

@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 
 public class SellStock extends BaseEntity implements Serializable {
-    private static final long serialVersionUID = -5438775144360985828L;
+    private static final long serialVersionUID = 2328115198610042907L;
     private String userId;
     private String email;
     private String username;
-    private List<Stock> stocks;
+    private List<StockOut> stockOuts;
     private Address address;
 
     public String getUserId() {
@@ -35,12 +35,12 @@ public class SellStock extends BaseEntity implements Serializable {
         this.username = username;
     }
 
-    public List<Stock> getStocks() {
-        return stocks;
+    public List<StockOut> getStockOuts() {
+        return stockOuts;
     }
 
-    public void setStock(List<Stock> stocks) {
-        this.stocks = stocks;
+    public void setStockOuts(List<StockOut> stockOuts) {
+        this.stockOuts = stockOuts;
     }
 
     public Address getAddress() {
