@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +38,9 @@ public class SellController {
                 stock.setUserId(String.valueOf(payLoad.get("userID")));
                 stock.setEmail(String.valueOf(payLoad.get("email")));
                 stock.setUsername(String.valueOf(payLoad.get("username")));
+                stock.setCreatedAt(String.valueOf(LocalDateTime.now()));
             }
+            sellStock.setCreatedAt(String.valueOf(LocalDateTime.now()));
             sellStock.setUserId(String.valueOf(payLoad.get("userID")));
             sellStock.setEmail(String.valueOf(payLoad.get("email")));
             sellStock.setUsername(String.valueOf(payLoad.get("username")));

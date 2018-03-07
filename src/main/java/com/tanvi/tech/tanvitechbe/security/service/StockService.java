@@ -64,7 +64,7 @@ public class StockService implements IStockService {
     public List<StockIn> updateStocks(List<StockOut> stocks) {
         List<StockIn> updatedStock = new ArrayList<>();
         for (StockOut stock : stocks) {
-            StockIn stockInfo = repository.findOne(stock.getId());
+            StockIn stockInfo = repository.findOne(stock.getStockInId());
             int updateStockNo = stockInfo.getStockLeft() - stock.getSellQuantity();
             stockInfo.setStockLeft(updateStockNo);
             stockInfo.setUpdatedAt(String.valueOf(LocalDateTime.now()));
