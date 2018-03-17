@@ -2,6 +2,8 @@ package com.tanvi.tech.tanvitechbe.controller;
 
 import com.tanvi.tech.tanvitechbe.dto.LoginDTO;
 import com.tanvi.tech.tanvitechbe.dto.TokenDTO;
+import com.tanvi.tech.tanvitechbe.exception.model.ServiceException;
+import com.tanvi.tech.tanvitechbe.exception.model.UserNotFoundException;
 import com.tanvi.tech.tanvitechbe.model.User;
 import com.tanvi.tech.tanvitechbe.security.service.TokenService;
 import com.tanvi.tech.tanvitechbe.service.UserService;
@@ -29,14 +31,23 @@ public class AuthenticationController {
 
     @RequestMapping(value = "auth/login", method = RequestMethod.POST)
     public ResponseEntity<?> authenticate(@RequestBody final LoginDTO dto) {
-        final String token = tokenService.getToken(dto.getUsername(), dto.getPassword());
-        if (token != null) {
-            final TokenDTO response = new TokenDTO();
-            response.setToken(token);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Authentication failed", HttpStatus.BAD_REQUEST);
+        try {
+            final String token = tokenService.getToken(dto.getUsername(), dto.getPassword());
+            if (token != null) {
+                final TokenDTO response = new TokenDTO();
+                response.setToken(token);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Authentication failed", HttpStatus.BAD_REQUEST);
+            }
+        } catch (UserNotFoundException userNotFoundException) {
+            // Using Random HTTP status to return UserNotFound Exception
+            return new ResponseEntity<>("User Not Found", HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS);
+        } catch (ServiceException serviceException) {
+            // Using Random HTTP status to return ServiceException for Authentication
+            return new ResponseEntity<>("Authentication exception", HttpStatus.UPGRADE_REQUIRED);
         }
+
     }
 
     @RequestMapping(value = "auth/forgot", method = RequestMethod.POST)
@@ -54,14 +65,13 @@ public class AuthenticationController {
     }
 
     /**
-     *
      * @param password map[0] -> new password, map[1] -> token, token from email, UUID code
      * @return if user table token in exits set the new password, return else block
      */
     @RequestMapping(value = "auth/reset", method = RequestMethod.POST)
-    public ResponseEntity<?> resetPassword(@RequestBody final Map<String, String> password ) {
+    public ResponseEntity<?> resetPassword(@RequestBody final Map<String, String> password) {
         User resetUser = userService.findByResetToken(password.get("token"));
-        if(resetUser != null) {
+        if (resetUser != null) {
             resetUser.setPassword(password.get("password"));
             userService.saveResetPassword(resetUser);
             return new ResponseEntity<>("Password changed successfully", HttpStatus.OK);

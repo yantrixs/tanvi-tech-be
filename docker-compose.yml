@@ -1,0 +1,23 @@
+version: "2.1"
+services:
+  mongo:
+    image: mongo:3.2.4
+    ports:
+    - 27017:27017
+    command: --smallfiles
+
+  mongo-client:
+    image: mongoclient/mongoclient
+    environment:
+      - MONGOCLIENT_DEFAULT_CONNECTION_URL=mongodb://damarlaravi:damarlaravi@ds253918.mlab.com:53918/thanvi-tech
+    links:
+      - mongo
+
+# APP  ***************************************************************************************
+  spring-boot-mongo-docker:
+    image: tanvi-tech-be
+    ports:
+    - 8080:8080
+    links:
+    - mongo
+    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -jar /app.jar"
